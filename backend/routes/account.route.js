@@ -1,7 +1,7 @@
 const express = require('express');
 const {Router} = require('express');
 const User = require('../models/User');
-const {signupUser,loginUser} = require('../controllers/account')
+const {signupUser,loginUser,getUser} = require('../controllers/account')
 const {signupZod} = require('../inputValidate/account')
 const {loginValidator, tokenValidator} = require('../middlewares/jwtValidator')
 
@@ -34,8 +34,9 @@ router.post('/login',async(req,res)=>{
     res.send(response)
 })
 
-router.post('/token',tokenValidator,(req,res)=>{
-    res.send("middleware checked");
+router.post('/token',tokenValidator,async(req,res)=>{
+    const loggedInUser = await getUser(req.data);
+    res.send(loggedInUser);
 })
 
 module.exports = router;

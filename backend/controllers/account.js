@@ -43,4 +43,10 @@ const loginUser = async(input)=>{
     }
 }
 
-module.exports = {signupUser,loginUser}
+const getUser = async(input)=>{
+    const email = input.email;
+    const loggedInUser = await User.findOne({email:email});
+    return loggedInUser;
+}
+
+module.exports = {signupUser,loginUser,getUser}

@@ -22,13 +22,14 @@ const tokenValidator = (req,res,next)=>{
         res.send('token not found');
     }
     const [type,token] = req.headers.authorization.split(" ");
-    const data = verifyToken(token);
+    const decoded = verifyToken(token);
     
-    if(data.error){
+    if(decoded.error){
         res.status(401).send('invalid token');
     }
-    
-    if(data.name){
+
+    if(decoded.name){
+        req.data = decoded;
         next();
     }
     else{
