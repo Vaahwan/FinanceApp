@@ -3,11 +3,11 @@ const {Schema} = require('mongoose')
 
 const ExpenseSchema = new Schema({
     date : {
-        type : Date,
+        type : String,
         required : true
     },
     month : {
-        type : String,
+        type : Number,
         required : true
     },
     year : {

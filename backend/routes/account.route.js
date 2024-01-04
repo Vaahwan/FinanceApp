@@ -30,8 +30,17 @@ router.post('/signup', async(req,res)=>{
 
 router.post('/login',async(req,res)=>{
     const userInput = req.body;
-    const response = await loginUser(userInput);
-    res.send(response)
+    try{
+        const inputValidate = signupZod.safeParse(userInput);
+        if(!inputValidate.success){
+            res.status(411).json('input is not valid');
+        }
+        const response = await loginUser(userInput);
+        res.send(response)
+    }
+    catch(error){
+        res.status(401).json({message:error});
+    }
 })
 
 router.post('/token',tokenValidator,async(req,res)=>{
