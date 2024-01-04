@@ -3,6 +3,7 @@ const {Router} = require('express');
 const User = require('../models/User');
 const {signupUser,loginUser} = require('../controllers/account')
 const {signupZod} = require('../inputValidate/account')
+const {loginValidator, tokenValidator} = require('../middlewares/jwtValidator')
 
 const router = Router();
 
@@ -31,6 +32,10 @@ router.post('/login',async(req,res)=>{
     const userInput = req.body;
     const response = await loginUser(userInput);
     res.send(response)
+})
+
+router.post('/token',tokenValidator,(req,res)=>{
+    res.send("middleware checked");
 })
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs')
+const {createToken} = require('../middlewares/jwtValidator')
 
 const signupUser = async(input)=>{
     const name = input.name;
@@ -12,7 +13,6 @@ const signupUser = async(input)=>{
 
     const salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt);
-    //bcrypt.compareSync("not_bacon", hash);
     
     await User.create({
         name : name,
@@ -35,7 +35,8 @@ const loginUser = async(input)=>{
     }
     const passwordCheck = bcrypt.compareSync(password,signedInUser.password);
     if(passwordCheck){
-        return `hello ${name}`
+        const token = createToken({name:name,email:email})
+        return token;
     }
     else{
         return "password does not match"
