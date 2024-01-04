@@ -6,15 +6,22 @@ const createExpense = async(input)=>{
     const year = input.year;
     const expense = input.expense;
     const expenseType = input.expenseType;
+    const userEmail = input.userEmail
 
     const newExpense = await Expense.create({
         date : date,
         month : month,
         year : year,
         expense : expense,
-        expenseType : expenseType
+        expenseType : expenseType,
+        userEmail : userEmail
     })
     return newExpense;
 }
 
-module.exports = {createExpense}
+const getAllExpense = async(input)=>{
+    const allExpense = await Expense.find({userEmail:input.userEmail})
+    return allExpense;
+}
+
+module.exports = {createExpense,getAllExpense}
