@@ -18,10 +18,14 @@ router.post('/signup', async(req,res)=>{
     try{
         const inputValidate = signupZod.safeParse(userInput)
         if(!inputValidate.success){
-            res.status(411).json({message:"input is not valid"});
+            res.status(411).send({message:"input is not valid"});
         }
-        const response = await signupUser(userInput)
-        res.send(response);
+        else{
+            userInput.friends = [];
+            userInput.groups = [];
+            const response = await signupUser(userInput)
+            res.send(response);
+        }
     }
     catch(error){
         res.status(401).json({message : error});
@@ -33,10 +37,12 @@ router.post('/login',async(req,res)=>{
     try{
         const inputValidate = signupZod.safeParse(userInput);
         if(!inputValidate.success){
-            res.status(411).json('input is not valid');
+            res.status(411).send('input is not valid');
         }
-        const response = await loginUser(userInput);
-        res.send(response)
+        else{
+            const response = await loginUser(userInput);
+            res.send(response)
+        }
     }
     catch(error){
         res.status(401).json({message:error});

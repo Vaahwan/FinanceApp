@@ -18,9 +18,11 @@ router.post('/expense',tokenValidator,async(req,res)=>{
         if(!inputValidate.success){
             res.status(411).json('input is not valid');
         }
-        userInput.userEmail = req.data.email;
-        const newExpense = await createExpense(userInput);
-        res.send(newExpense);
+        else{
+            userInput.userEmail = req.data.email;
+            const newExpense = await createExpense(userInput);
+            res.send(newExpense);
+        }
     }
     catch(error){
         res.status(401).json({message:error});
@@ -65,9 +67,11 @@ router.put('/expense/:id',tokenValidator,async(req,res)=>{
         if(!inputValidate.success){
             res.status(411).json('input is not valid');
         }
-        userInput.userEmail = userEmail;
-        const updatedExpense = await updateExpense(userInput,id,userEmail);
-        res.send(updatedExpense);
+        else{
+            userInput.userEmail = userEmail;
+            const updatedExpense = await updateExpense(userInput,id,userEmail);
+            res.send(updatedExpense);
+        }
     }
     catch(error){
         res.status(401).json({message:error,msg:"something happen"})
