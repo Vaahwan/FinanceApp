@@ -33,10 +33,8 @@ const updateExpense = async(input,id,email)=>{
     try{
         const expense = await Expense.findById(id);
         if(expense.userEmail!=email){
-            console.log(expense)
             return "unauthorised to edit this expense"
         }
-        console.log("calling")
         const updatedExpense = await Expense.findOneAndReplace({_id:id},input,{new:true,returnOriginal: false});
         return updatedExpense;
         }
@@ -45,4 +43,18 @@ const updateExpense = async(input,id,email)=>{
     }
 }
 
-module.exports = {createExpense,getAllExpense,getSpecificExpense,updateExpense}
+const deleteExpense = async(id,email)=>{
+    try{
+        const expense = await Expense.findById(id);
+        if(expense.userEmail!=email){
+            return "unauthorised to delete this expense";
+        }
+        const deletedExpense = await Expense.findByIdAndDelete(id);
+        return deletedExpense;
+    }
+    catch(error){
+        return error;
+    }
+}
+
+module.exports = {createExpense,getAllExpense,getSpecificExpense,updateExpense,deleteExpense}

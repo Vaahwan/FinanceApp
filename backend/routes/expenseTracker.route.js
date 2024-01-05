@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {tokenValidator} = require('../middlewares/jwtValidator')
 const {expenseZod} = require('../inputValidate/expense')
-const {createExpense,getAllExpense,getSpecificExpense,updateExpense} = require('../controllers/expense')
+const {createExpense,getAllExpense,getSpecificExpense,updateExpense,deleteExpense} = require('../controllers/expense')
 
 const router = Router();
 
@@ -75,6 +75,18 @@ router.put('/expense/:id',tokenValidator,async(req,res)=>{
 })
 
 // delete
+
+router.delete('/expense/:id',tokenValidator,async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const userEmail = req.data.email;
+        const deletedExpense = await deleteExpense(id,userEmail)
+        res.send(deletedExpense);
+    }
+    catch(error){
+        res.status(401).json({message:error});
+    }
+})
 
 
 module.exports = router;

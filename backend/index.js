@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json());
 const port = 8080;
-app.use('/expensetracer',expenseTracerRoute)
+app.use('/expensetracker',expenseTracerRoute)
 app.use('/account',accountRoute)
 
 connect();
