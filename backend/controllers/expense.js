@@ -24,4 +24,9 @@ const getAllExpense = async(input)=>{
     return allExpense;
 }
 
-module.exports = {createExpense,getAllExpense}
+const getSpecificExpense = async(input)=>{
+    const specificExpense = await Expense.findById(input);
+    return specificExpense;
+}
+
+module.exports = {createExpense,getAllExpense,getSpecificExpense}

@@ -1,13 +1,15 @@
 const {Router} = require('express');
 const {tokenValidator} = require('../middlewares/jwtValidator')
 const {expenseZod} = require('../inputValidate/expense')
-const {createExpense,getAllExpense} = require('../controllers/expense')
+const {createExpense,getAllExpense,getSpecificExpense} = require('../controllers/expense')
 
 const router = Router();
 
 router.get('/',(req,res)=>{
     res.send("hello from expenseTracer")
 })
+
+// create
 
 router.post('/expense',tokenValidator,async(req,res)=>{
     const userInput = req.body;
@@ -25,9 +27,11 @@ router.post('/expense',tokenValidator,async(req,res)=>{
     }
 })
 
+// Read all
+
 router.get('/expense',tokenValidator,async(req,res)=>{
     try{
-        userEmail = req.data.email;
+        const userEmail = req.data.email;
         const allExpense = await getAllExpense({userEmail:userEmail});
         res.send(allExpense);
     }
@@ -35,5 +39,24 @@ router.get('/expense',tokenValidator,async(req,res)=>{
         res.status(401).json({message:error})
     }
 })
+
+// Read specific
+
+router.get('/expense/:id',tokenValidator,async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const specificExpense = await getSpecificExpense(id);
+        res.send(specificExpense)
+    }   
+    catch(error){
+        res.status(401).json({message:error})
+    }
+})
+
+// edit
+
+
+// delete
+
 
 module.exports = router;
