@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {tokenValidator} = require('../middlewares/jwtValidator')
 const {expenseZod} = require('../inputValidate/expense')
-const {createExpense,getAllExpense,getSpecificExpense} = require('../controllers/expense')
+const {createExpense,getAllExpense,getSpecificExpense,updateExpense} = require('../controllers/expense')
 
 const router = Router();
 
@@ -53,8 +53,26 @@ router.get('/expense/:id',tokenValidator,async(req,res)=>{
     }
 })
 
-// edit
+// edit or update
 
+router.put('/expense/:id',tokenValidator,async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const userEmail = req.data.email;
+        const userInput = req.body;
+
+        const inputValidate = expenseZod.safeParse(userInput);
+        if(!inputValidate.success){
+            res.status(411).json('input is not valid');
+        }
+        userInput.userEmail = userEmail;
+        const updatedExpense = await updateExpense(userInput,id,userEmail);
+        res.send(updatedExpense);
+    }
+    catch(error){
+        res.status(401).json({message:error,msg:"something happen"})
+    }
+})
 
 // delete
 

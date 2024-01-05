@@ -24,9 +24,25 @@ const getAllExpense = async(input)=>{
     return allExpense;
 }
 
-const getSpecificExpense = async(input)=>{
-    const specificExpense = await Expense.findById(input);
+const getSpecificExpense = async(id)=>{
+    const specificExpense = await Expense.findById(id);
     return specificExpense;
 }
 
-module.exports = {createExpense,getAllExpense,getSpecificExpense}
+const updateExpense = async(input,id,email)=>{
+    try{
+        const expense = await Expense.findById(id);
+        if(expense.userEmail!=email){
+            console.log(expense)
+            return "unauthorised to edit this expense"
+        }
+        console.log("calling")
+        const updatedExpense = await Expense.findOneAndReplace({_id:id},input,{new:true,returnOriginal: false});
+        return updatedExpense;
+        }
+    catch(error){
+        return error;
+    }
+}
+
+module.exports = {createExpense,getAllExpense,getSpecificExpense,updateExpense}
