@@ -16,6 +16,17 @@ const includedSchema = new Schema({
     }
 })
 
+const personSchema = new Schema({
+    name:{
+        type: String,
+        require: true
+    },
+    email:{
+        type: String,
+        require: true
+    }
+})
+
 const groupExpenseSchema = new Schema({
     date:{
         type: String,
@@ -37,16 +48,20 @@ const groupExpenseSchema = new Schema({
         type: String,
         require: true
     }, 
+    expenseType:{
+        type: String,
+        require: true
+    },
     groupId:{
         type: String,
         require: true
     },
     postBy:{
-        type: String,
+        type: personSchema,
         require: true
     },
     paidBy:{
-        type: String,
+        type: personSchema,
         require: true
     },
     included:{

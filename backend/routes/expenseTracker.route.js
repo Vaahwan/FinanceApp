@@ -16,7 +16,7 @@ router.post('/expense',tokenValidator,async(req,res)=>{
     try{
         const inputValidate = expenseZod.safeParse(userInput);
         if(!inputValidate.success){
-            res.status(411).json('input is not valid');
+            res.status(411).send('input is not valid');
         }
         else{
             userInput.userEmail = req.data.email;
@@ -65,7 +65,7 @@ router.put('/expense/:id',tokenValidator,async(req,res)=>{
 
         const inputValidate = expenseZod.safeParse(userInput);
         if(!inputValidate.success){
-            res.status(411).json('input is not valid');
+            res.status(411).send('input is not valid');
         }
         else{
             userInput.userEmail = userEmail;
