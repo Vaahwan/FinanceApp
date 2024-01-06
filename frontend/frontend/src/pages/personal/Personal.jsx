@@ -6,6 +6,7 @@ import Select from 'react-select';
 import {useJwt} from 'react-jwt'
 import { Heading } from '@chakra-ui/react'
 import { Input,  InputGroup, InputRightElement, Button } from '@chakra-ui/react'
+import ExpenseTable from "../../component/ExpenseTable";
 
 const options = [
     { value: 'Food', label: 'Food' },
@@ -34,6 +35,7 @@ const Personal = () => {
     const [dateErr,setDateErr] = useState(false);
     const [expenseErr,setExpenseErr] = useState(false);
     const [expenseTypeErr,setExpenseTypeErr] = useState(false);
+    const [refresh,setRefresh] = useState(true);
     const api = "http://localhost:8080/expensetracker/expense"
     const jwtpassword = 'vaahwan'
     const jwtToken = localStorage.getItem('jwtToken');
@@ -78,7 +80,7 @@ const Personal = () => {
                 "Authorization": `Bearer ${jwtToken}`
             }
         });
-        console.log(response);
+        setRefresh(!refresh);
     }
 
     return (
@@ -112,6 +114,9 @@ const Personal = () => {
                 }}
                     onClick={handleSubmit}
                 >Submit</Button>
+            </div>
+            <div className="table-container">
+                <ExpenseTable refresh={refresh} />
             </div>
         </div>
     )
