@@ -1,0 +1,17 @@
+.container{
+    position: relative;
+    top: 70px;
+}
+
+.form-container{
+    /* border: 2px solid red; */
+    margin-top: 160px;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.input{
+    margin: 12px 6px;
+}
+

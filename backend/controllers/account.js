@@ -14,13 +14,13 @@ const signupUser = async(input)=>{
     const salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt);
     
-    await User.create({
+    let response = await User.create({
         name : name,
         email : email,
         password : hash
     })
 
-    return "user created successfully"   
+    return response;
 }
 
 
