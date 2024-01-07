@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './personal.css'
 import { useState } from "react";
 import axios from 'axios'
@@ -37,6 +37,7 @@ const Personal = () => {
     const [expenseErr,setExpenseErr] = useState(false);
     const [expenseTypeErr,setExpenseTypeErr] = useState(false);
     const [refresh,setRefresh] = useState(true);
+    const [fetchedData,setFetchedData] = useState();
     const api = "http://localhost:8080/expensetracker/expense"
     const jwtpassword = 'vaahwan'
     const jwtToken = localStorage.getItem('jwtToken');
@@ -45,6 +46,10 @@ const Personal = () => {
     const handleSelect = (selectedOption)=>{
         setExpenseType(selectedOption.value);
     }
+
+    useEffect(()=>{
+        console.log('refresh')
+    },[refresh])
 
     const handleSubmit = async()=>{
         if(date===""){
@@ -81,7 +86,7 @@ const Personal = () => {
                 "Authorization": `Bearer ${jwtToken}`
             }
         });
-        setRefresh(!refresh);
+        // setRefresh(!refresh);
     }
 
     return (
@@ -127,6 +132,8 @@ const Personal = () => {
                 </nav>
                 <Outlet refresh={refresh} />
             </div>
+           
+
         </div>
     )
 }
