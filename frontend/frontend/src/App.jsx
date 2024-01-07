@@ -9,6 +9,8 @@ import Login from './pages/login/Login'
 import Signup from './pages/signup/Signup'
 import AuthRequired from './auth/AuthRequired'
 import {Route,Routes} from 'react-router-dom'
+import ExpenseTable from './component/ExpenseTable'
+import ExpenseChart from './component/ExpenseChart'
 
 function App() {
 
@@ -21,7 +23,10 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route element={<AuthRequired/>} >
-          <Route path='/expense' element={<Personal/>}></Route>
+          <Route path='/expense'  element={<Personal/>}>
+            <Route path='/expense' element={<ExpenseTable/>} />
+            <Route path='/expense/charts' element={<ExpenseChart/>} />
+          </Route>
         </Route>
         <Route element={<AuthRequired/>} >
           <Route path='/group' element={<Group/>} />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from 'axios'
 import Select from 'react-select';
 import {useJwt} from 'react-jwt'
+import { Outlet,NavLink } from "react-router-dom";
 import { Heading } from '@chakra-ui/react'
 import { Input,  InputGroup, InputRightElement, Button } from '@chakra-ui/react'
 import ExpenseTable from "../../component/ExpenseTable";
@@ -116,7 +117,15 @@ const Personal = () => {
                 >Submit</Button>
             </div>
             <div className="table-container">
-                <ExpenseTable refresh={refresh} />
+                <nav className="expense-navmenu">
+                    <NavLink to='/expense' className='expense-home' > 
+                        <span className="expense-span">TABLE</span> 
+                    </NavLink>
+                    <NavLink to='/expense/charts' className='expense-home' >
+                        <span className="expense-span">CHARTS</span> 
+                    </NavLink>
+                </nav>
+                <Outlet refresh={refresh} />
             </div>
         </div>
     )
