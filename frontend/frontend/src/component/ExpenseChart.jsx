@@ -4,14 +4,14 @@ import axios from "axios";
 import Chart from 'chart.js/auto'
 import BarChart from "./BarChart";
 
-const ExpenseChart = () => {
+const ExpenseChart = ({refresh}) => {
     const [data, setData] = useState({});
     const url = 'http://localhost:8080/expensetracker/expense';
     const jwtToken = localStorage.getItem('jwtToken');
 
     useEffect(() => {
         fetchedata()
-    }, [])
+    }, [refresh])
 
     const fetchedata = async () => {
         const response = await axios.get(url, {

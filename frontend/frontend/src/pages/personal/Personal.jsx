@@ -7,7 +7,7 @@ import {useJwt} from 'react-jwt'
 import { Outlet,NavLink } from "react-router-dom";
 import { Heading } from '@chakra-ui/react'
 import { Input,  InputGroup, InputRightElement, Button } from '@chakra-ui/react'
-import ExpenseTable from "../../component/ExpenseTable";
+// import ExpenseTable from "../../component/ExpenseTable";
 
 const options = [
     { value: 'Food', label: 'Food' },
@@ -29,14 +29,13 @@ const customStyles = {
     }),
 };
 
-const Personal = () => {
+const Personal = ({refresh , setRefresh}) => {
     const [date,setDate] = useState("");
     const [expense,setExpense] = useState("");
     const [expenseType,setExpenseType] = useState("");
     const [dateErr,setDateErr] = useState(false);
     const [expenseErr,setExpenseErr] = useState(false);
     const [expenseTypeErr,setExpenseTypeErr] = useState(false);
-    const [refresh,setRefresh] = useState(true);
     const [fetchedData,setFetchedData] = useState();
     const api = "http://localhost:8080/expensetracker/expense"
     const jwtpassword = 'vaahwan'
@@ -86,7 +85,7 @@ const Personal = () => {
                 "Authorization": `Bearer ${jwtToken}`
             }
         });
-        // setRefresh(!refresh);
+        setRefresh(!refresh);
     }
 
     return (
