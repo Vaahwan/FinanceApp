@@ -4,7 +4,7 @@ import {Table,Thead,Tbody,Tfoot,Tr,Th,Td,TableCaption,TableContainer,Heading, Bu
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 
-const ExpenseTable = ({ refresh }) => {
+const ExpenseTable = ({ refresh,setRefresh }) => {
     const [data, setData] = useState([]);
     const [modalOpen,setModalOpen] = useState(false);
     const url = 'http://localhost:8080/expensetracker/expense';
@@ -41,18 +41,18 @@ const ExpenseTable = ({ refresh }) => {
                 Authorization: `Bearer ${jwtToken}`
             }
         })
-        console.log(response)
+        
     }
 
-    // const handleDelete = async(elem)=>{
-    //     const deleteurl = `http://localhost:8080/expensetracker/expense/${elem.id}`
-    //     const response = await axios.delete(deleteurl,{
-    //         headers:{
-    //             Authorization: `Bearer ${jwtToken}`
-    //         }
-    //     });
-    //     console.log(response);
-    // }
+    const handleDelete = async(elem)=>{
+        const deleteurl = `http://localhost:8080/expensetracker/expense/${elem._id}`
+        const response = await axios.delete(deleteurl,{
+            headers:{
+                Authorization: `Bearer ${jwtToken}`
+            }
+        });
+        setRefresh(!refresh);
+    }
 
     return (
         <div>

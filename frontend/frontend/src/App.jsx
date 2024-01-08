@@ -26,7 +26,7 @@ function App() {
         <Route path='/' element={<Home/>} />
         <Route element={<AuthRequired/>} >
           <Route path='/expense'  element={<Personal refresh={refresh} setRefresh={setRefresh}/>}>
-            <Route path='/expense' element={<ExpenseTable refresh={refresh}/>} />
+            <Route path='/expense' element={<ExpenseTable refresh={refresh} setRefresh={setRefresh} />} />
             <Route path='/expense/charts' element={<ExpenseChart refresh={refresh}/>} />
           </Route>
         </Route>
