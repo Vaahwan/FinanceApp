@@ -32,6 +32,15 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const url = 'http://localhost:8080/expensetracker/expense';
     const jwtToken = localStorage.getItem('jwtToken');
+    const [date,setDate] = useState();
+    const [expense,setExpense] = useState();
+    const [expenseType,setExpenseType] = useState();
+    const [month,setMonth] = useState();
+    const [year,setYear] = useState();
+    const [editId,setEditId] = useState();
+    const [dateErr,setDateErr] = useState(false);
+    const [expenseErr,setExpenseErr] = useState(false);
+    const [expenseTypeErr,setExpenseTypeErr] = useState(false);
 
     useEffect(() => {
         fetchedata()
@@ -44,27 +53,45 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
             }
         })
         setData(response.data)
-        console.log(response);
+        // console.log(response);
     }
 
-    console.log(data);
+    // console.log(data);
+
+    const handleSelect = (selectedOption)=>{
+        setExpenseType(selectedOption.value);
+    }
+
+
+    const handleModal = (elem)=>{
+        console.log(elem);
+        setDate(elem.date);
+        setExpense(elem.expense);
+        setExpenseType(elem.expenseType);
+        setMonth(elem.month);
+        setYear(elem.year);
+        setEditId(elem._id);
+        setModalOpen(true)
+    }
 
     const handleEdit = async (elem) => {
         // console.log(elem)
         const editObj = {
-            date: elem.date,
-            month: elem.month,
-            year: elem.year,
-            expense: elem.expense,
-            expenseType: elem.expenseType
+            date: date,
+            month: month,
+            year: year,
+            expense: Number(expense),
+            expenseType: expenseType
         }
-        const editurl = `http://localhost:8080/expensetracker/expense/${elem._id}`
+        const editurl = `http://localhost:8080/expensetracker/expense/${editId}`
         const response = await axios.put(editurl, editObj, {
             headers: {
                 Authorization: `Bearer ${jwtToken}`
             }
         })
-
+        setRefresh(!refresh)
+        setModalOpen(false);
+        console.log(response);
     }
 
     const handleDelete = async (elem) => {
@@ -99,7 +126,7 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                                     <Td>{elem.date}</Td>
                                     <Td>{elem.expense}</Td>
                                     <Td mr={4} >{elem.expenseType}</Td>
-                                    <td onClick={() => { setModalOpen(true) }} > <EditIcon /> </td>
+                                    <td onClick={() => { handleModal(elem) }} > <EditIcon /> </td>
                                     <td onClick={() => { handleDelete(elem) }} > <DeleteIcon /> </td>
                                 </Tr>
                             })
@@ -129,17 +156,19 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                                 size="lg"
                                 type="datetime-local"
                                 className="input"
-                                onChange={(e) => {}}
+                                value={date}
+                                onChange={(e) => {setDate(e.target.value)}}
                             />
                             {/* {dateErr && <p style={{ color: 'red' }}>Please Select Date</p>} */}
-                            <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' onChange={(e) => {  }} />
+                            <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' value={expense} onChange={(e) => { setExpense(e.target.value) }} />
                             {/* {expenseErr && <p style={{ color: 'red' }}>Please Enter Expense</p>} */}
                             <Select
                                 placeholder="Select Expense Type"
                                 options={options}
                                 styles={customStyles}
                                 className="input select"
-                                // onChange={handleSelect}
+                                // value={expenseType}
+                                onChange={(e)=>{handleSelect}}
                                 size='lg'
                             />
                             {/* {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>} */}
@@ -165,7 +194,8 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                                 border: '1px',
                                 borderColor: 'var(--primary-color)'
                             }}
-                        >Submit</Button>
+                            onClick={()=>{handleEdit()}}
+                            >Submit</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
