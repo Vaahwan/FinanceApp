@@ -1,12 +1,35 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'
-import {Table,Thead,Tbody,Tfoot,Tr,Th,Td,TableCaption,TableContainer,Heading, Button } from '@chakra-ui/react'
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, } from '@chakra-ui/react'
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Heading, Button } from '@chakra-ui/react'
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,Input } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import Select from 'react-select';
 
-const ExpenseTable = ({ refresh,setRefresh }) => {
+
+const options = [
+    { value: 'Food', label: 'Food' },
+    { value: 'Travel', label: 'Travel' },
+    { value: 'Clothing', label: 'Clothing' },
+    { value: 'Rent', label: 'Rent' },
+    { value: 'EMI', label: 'EMI' },
+    { value: 'Entertaitment', label: 'Entertaitment' },
+    { value: 'Bills', label: 'Bills' },
+    { value: 'Eatout', label:'Eatout' },
+    { value: 'Investment', label:'Investment'}
+];
+
+const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? 'var(--primary-color)' : 'white',
+      color: state.isFocused ? 'var(--secondary-color)' : 'var(--primary-color)'
+    }),
+};
+
+
+const ExpenseTable = ({ refresh, setRefresh }) => {
     const [data, setData] = useState([]);
-    const [modalOpen,setModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const url = 'http://localhost:8080/expensetracker/expense';
     const jwtToken = localStorage.getItem('jwtToken');
 
@@ -41,13 +64,13 @@ const ExpenseTable = ({ refresh,setRefresh }) => {
                 Authorization: `Bearer ${jwtToken}`
             }
         })
-        
+
     }
 
-    const handleDelete = async(elem)=>{
+    const handleDelete = async (elem) => {
         const deleteurl = `http://localhost:8080/expensetracker/expense/${elem._id}`
-        const response = await axios.delete(deleteurl,{
-            headers:{
+        const response = await axios.delete(deleteurl, {
+            headers: {
                 Authorization: `Bearer ${jwtToken}`
             }
         });
@@ -77,7 +100,7 @@ const ExpenseTable = ({ refresh,setRefresh }) => {
                                     <Td>{elem.expense}</Td>
                                     <Td mr={4} >{elem.expenseType}</Td>
                                     <td onClick={() => { setModalOpen(true) }} > <EditIcon /> </td>
-                                    <td onClick={()=>{handleDelete(elem)}} > <DeleteIcon /> </td>
+                                    <td onClick={() => { handleDelete(elem) }} > <DeleteIcon /> </td>
                                 </Tr>
                             })
                         }
@@ -93,20 +116,56 @@ const ExpenseTable = ({ refresh,setRefresh }) => {
                 </Table>
             </TableContainer>
 
-            <Modal isOpen={modalOpen} onClose={()=>{setModalOpen(false)}}>
+            <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false) }}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader>Edit</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <p>hello world</p>
+                        <div className="form-container">
+                            <Heading mb={4} >Edit Your Expense</Heading>
+                            <Input
+                                placeholder="Select Date and Time"
+                                size="lg"
+                                type="datetime-local"
+                                className="input"
+                                onChange={(e) => {}}
+                            />
+                            {/* {dateErr && <p style={{ color: 'red' }}>Please Select Date</p>} */}
+                            <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' onChange={(e) => {  }} />
+                            {/* {expenseErr && <p style={{ color: 'red' }}>Please Enter Expense</p>} */}
+                            <Select
+                                placeholder="Select Expense Type"
+                                options={options}
+                                styles={customStyles}
+                                className="input select"
+                                // onChange={handleSelect}
+                                size='lg'
+                            />
+                            {/* {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>} */}
+                            
+                        </div>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={()=>{setModalOpen(false)}}>
+                        <Button bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                background: "white",
+                                color: "var(--primary-color)",
+                                border: '1px',
+                                borderColor: 'var(--primary-color)'
+                            }} 
+                            mr={3} 
+                            onClick={() => { setModalOpen(false) }}>
                             Close
                         </Button>
-                        <Button variant='ghost'>Secondary Action</Button>
+                        <Button variant='ghost'
+                            bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                background: "white",
+                                color: "var(--primary-color)",
+                                border: '1px',
+                                borderColor: 'var(--primary-color)'
+                            }}
+                        >Submit</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
