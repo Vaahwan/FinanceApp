@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Heading, Button } from '@chakra-ui/react'
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,Input } from '@chakra-ui/react'
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import Select from 'react-select';
 
@@ -14,15 +14,15 @@ const options = [
     { value: 'EMI', label: 'EMI' },
     { value: 'Entertaitment', label: 'Entertaitment' },
     { value: 'Bills', label: 'Bills' },
-    { value: 'Eatout', label:'Eatout' },
-    { value: 'Investment', label:'Investment'}
+    { value: 'Eatout', label: 'Eatout' },
+    { value: 'Investment', label: 'Investment' }
 ];
 
 const customStyles = {
     option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? 'var(--primary-color)' : 'white',
-      color: state.isFocused ? 'var(--secondary-color)' : 'var(--primary-color)'
+        ...provided,
+        backgroundColor: state.isFocused ? 'var(--primary-color)' : 'white',
+        color: state.isFocused ? 'var(--secondary-color)' : 'var(--primary-color)'
     }),
 };
 
@@ -32,15 +32,15 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const url = 'http://localhost:8080/expensetracker/expense';
     const jwtToken = localStorage.getItem('jwtToken');
-    const [date,setDate] = useState();
-    const [expense,setExpense] = useState();
-    const [expenseType,setExpenseType] = useState();
-    const [month,setMonth] = useState();
-    const [year,setYear] = useState();
-    const [editId,setEditId] = useState();
-    const [dateErr,setDateErr] = useState(false);
-    const [expenseErr,setExpenseErr] = useState(false);
-    const [expenseTypeErr,setExpenseTypeErr] = useState(false);
+    const [date, setDate] = useState();
+    const [expense, setExpense] = useState();
+    const [expenseType, setExpenseType] = useState();
+    const [month, setMonth] = useState();
+    const [year, setYear] = useState();
+    const [editId, setEditId] = useState();
+    const [dateErr, setDateErr] = useState(false);
+    const [expenseErr, setExpenseErr] = useState(false);
+    const [expenseTypeErr, setExpenseTypeErr] = useState(false);
 
     useEffect(() => {
         fetchedata()
@@ -53,18 +53,22 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
             }
         })
         setData(response.data)
-        // console.log(response);
     }
 
-    // console.log(data);
+    const converDateFormat = (inputDate) => {
+        let dateObj = new Date(inputDate);
+        let day = dateObj.getDate();
+        let month = dateObj.getMonth() + 1;
+        let year = dateObj.getFullYear();
+        let formattedDate = day + '/' + month + '/' + year;
+        return formattedDate;
+    }
 
-    const handleSelect = (selectedOption)=>{
+    const handleSelect = (selectedOption) => {
         setExpenseType(selectedOption.value);
     }
 
-
-    const handleModal = (elem)=>{
-        console.log(elem);
+    const handleModal = (elem) => {
         setDate(elem.date);
         setExpense(elem.expense);
         setExpenseType(elem.expenseType);
@@ -75,7 +79,6 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
     }
 
     const handleEdit = async (elem) => {
-        // console.log(elem)
         const editObj = {
             date: date,
             month: month,
@@ -91,7 +94,6 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
         })
         setRefresh(!refresh)
         setModalOpen(false);
-        console.log(response);
     }
 
     const handleDelete = async (elem) => {
@@ -123,7 +125,7 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                         {
                             data.map((elem, id) => {
                                 return <Tr key={id}>
-                                    <Td>{elem.date}</Td>
+                                    <Td>{converDateFormat(elem.date)}</Td>
                                     <Td>{elem.expense}</Td>
                                     <Td mr={4} >{elem.expenseType}</Td>
                                     <td onClick={() => { handleModal(elem) }} > <EditIcon /> </td>
@@ -157,7 +159,7 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                                 type="datetime-local"
                                 className="input"
                                 value={date}
-                                onChange={(e) => {setDate(e.target.value)}}
+                                onChange={(e) => { setDate(e.target.value) }}
                             />
                             {/* {dateErr && <p style={{ color: 'red' }}>Please Select Date</p>} */}
                             <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' value={expense} onChange={(e) => { setExpense(e.target.value) }} />
@@ -168,22 +170,22 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                                 styles={customStyles}
                                 className="input select"
                                 // value={expenseType}
-                                onChange={(e)=>{handleSelect}}
+                                onChange={(e) => { handleSelect }}
                                 size='lg'
                             />
                             {/* {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>} */}
-                            
+
                         </div>
                     </ModalBody>
 
                     <ModalFooter>
                         <Button bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
-                                background: "white",
-                                color: "var(--primary-color)",
-                                border: '1px',
-                                borderColor: 'var(--primary-color)'
-                            }} 
-                            mr={3} 
+                            background: "white",
+                            color: "var(--primary-color)",
+                            border: '1px',
+                            borderColor: 'var(--primary-color)'
+                        }}
+                            mr={3}
                             onClick={() => { setModalOpen(false) }}>
                             Close
                         </Button>
@@ -194,8 +196,8 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                                 border: '1px',
                                 borderColor: 'var(--primary-color)'
                             }}
-                            onClick={()=>{handleEdit()}}
-                            >Submit</Button>
+                            onClick={() => { handleEdit() }}
+                        >Submit</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
