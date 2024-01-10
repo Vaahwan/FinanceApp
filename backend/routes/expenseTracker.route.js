@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {tokenValidator} = require('../middlewares/jwtValidator')
 const {expenseZod} = require('../inputValidate/expense')
-const {createExpense,getAllExpense,getSpecificExpense,updateExpense,deleteExpense} = require('../controllers/expense')
+const {createExpense,getAllExpense,getSpecificExpense,updateExpense,deleteExpense, getPageExpense} = require('../controllers/expense')
 
 const router = Router();
 
@@ -37,6 +37,18 @@ router.get('/expense',tokenValidator,async(req,res)=>{
         const allExpense = await getAllExpense({userEmail:userEmail});
         res.send(allExpense);
     }
+    catch(error){
+        res.status(401).json({message:error})
+    }
+})
+
+router.get('/expenses',tokenValidator,async(req,res)=>{
+    try{
+        const {page,size} = req.query;
+        const userEmail = req.data.email;
+        const pageExpense = await getPageExpense({userEmail:userEmail,page:page,size:size});
+        res.send(pageExpense)
+    }   
     catch(error){
         res.status(401).json({message:error})
     }

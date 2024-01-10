@@ -24,6 +24,20 @@ const getAllExpense = async(input)=>{
     return allExpense;
 }
 
+const getPageExpense = async(input)=>{
+    let {page,size,sort} = input;
+    if(!page){
+        page = 1;
+    }
+    if(!size){
+        size = 1;
+    }
+    const limit = parseInt(size)
+    const pageExpense = await Expense.find({userEmail:input.userEmail}).limit(limit);
+    console.log("check")
+    return pageExpense;
+}
+
 const getSpecificExpense = async(id)=>{
     const specificExpense = await Expense.findById(id);
     return specificExpense;
@@ -57,4 +71,4 @@ const deleteExpense = async(id,email)=>{
     }
 }
 
-module.exports = {createExpense,getAllExpense,getSpecificExpense,updateExpense,deleteExpense}
+module.exports = {createExpense,getAllExpense,getSpecificExpense,updateExpense,deleteExpense,getPageExpense}
