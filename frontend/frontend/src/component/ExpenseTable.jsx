@@ -87,12 +87,14 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
             expense: Number(expense),
             expenseType: expenseType
         }
+        console.log(editObj)
         const editurl = `http://localhost:8080/expensetracker/expense/${editId}`
         const response = await axios.put(editurl, editObj, {
             headers: {
                 Authorization: `Bearer ${jwtToken}`
             }
         })
+        console.log(response)
         setRefresh(!refresh)
         setModalOpen(false);
     }
@@ -172,7 +174,7 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
                                         styles={customStyles}
                                         className="input select"
                                         // value={expenseType}
-                                        onChange={(e) => { handleSelect }}
+                                        onChange={ handleSelect }
                                         size='lg'
                                     />
                                     {/* {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>} */}
@@ -203,8 +205,10 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
                             </ModalFooter>
                         </ModalContent>
                     </Modal>
+
                 </div>
                 : <Loader type="bubble-scale" bgColor="var(--primary-color)" color="var(--secondary-color)" size={50} />}
+
                 <div>
                         <Button variant='ghost'
                             bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
