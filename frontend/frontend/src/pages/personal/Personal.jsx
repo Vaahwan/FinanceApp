@@ -3,10 +3,10 @@ import './personal.css'
 import { useState } from "react";
 import axios from 'axios'
 import Select from 'react-select';
-import {useJwt} from 'react-jwt'
-import { Outlet,NavLink } from "react-router-dom";
-import { Heading } from '@chakra-ui/react'
-import { Input,  InputGroup, InputRightElement, Button } from '@chakra-ui/react'
+import { useJwt } from 'react-jwt'
+import { Outlet, NavLink } from "react-router-dom";
+import { Heading, FormErrorMessage, FormControl } from '@chakra-ui/react'
+import { Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react'
 // import ExpenseTable from "../../component/ExpenseTable";
 
 const options = [
@@ -17,53 +17,53 @@ const options = [
     { value: 'EMI', label: 'EMI' },
     { value: 'Entertaitment', label: 'Entertaitment' },
     { value: 'Bills', label: 'Bills' },
-    { value: 'Eatout', label:'Eatout' },
-    { value: 'Investment', label:'Investment'}
+    { value: 'Eatout', label: 'Eatout' },
+    { value: 'Investment', label: 'Investment' }
 ];
 
 const customStyles = {
     option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? 'var(--primary-color)' : 'white',
-      color: state.isFocused ? 'var(--secondary-color)' : 'var(--primary-color)'
+        ...provided,
+        backgroundColor: state.isFocused ? 'var(--primary-color)' : 'white',
+        color: state.isFocused ? 'var(--secondary-color)' : 'var(--primary-color)'
     }),
 };
 
-const Personal = ({refresh , setRefresh}) => {
-    const [date,setDate] = useState("");
-    const [expense,setExpense] = useState("");
-    const [expenseType,setExpenseType] = useState("");
-    const [dateErr,setDateErr] = useState(false);
-    const [expenseErr,setExpenseErr] = useState(false);
-    const [expenseTypeErr,setExpenseTypeErr] = useState(false);
-    const [fetchedData,setFetchedData] = useState();
+const Personal = ({ refresh, setRefresh }) => {
+    const [date, setDate] = useState("");
+    const [expense, setExpense] = useState("");
+    const [expenseType, setExpenseType] = useState("");
+    const [dateErr, setDateErr] = useState(false);
+    const [expenseErr, setExpenseErr] = useState(false);
+    const [expenseTypeErr, setExpenseTypeErr] = useState(false);
+    const [fetchedData, setFetchedData] = useState();
     const api = "http://localhost:8080/expensetracker/expense"
     const jwtpassword = 'vaahwan'
     const jwtToken = localStorage.getItem('jwtToken');
     const { decodedToken, isExpired } = useJwt(jwtToken);
 
-    const handleSelect = (selectedOption)=>{
+    const handleSelect = (selectedOption) => {
         setExpenseType(selectedOption.value);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log('refresh')
-    },[refresh])
+    }, [refresh])
 
-    const handleSubmit = async()=>{
-        if(date===""){
+    const handleSubmit = async () => {
+        if (date === "") {
             setDateErr(true);
-            setTimeout(()=>{
+            setTimeout(() => {
                 setDateErr(false);
-            },3000)
+            }, 3000)
         }
-        if(expense===""){
+        if (expense === "") {
             setExpenseErr(true);
             setTimeout(() => {
                 setExpenseErr(false)
             }, 3000);
         }
-        if(expenseType===""){
+        if (expenseType === "") {
             setExpenseTypeErr(true)
             setTimeout(() => {
                 setExpenseTypeErr(false)
@@ -71,17 +71,17 @@ const Personal = ({refresh , setRefresh}) => {
         }
         const currdate = new Date();
         const expenseObj = {
-            date : date,
-            month : currdate.getMonth(),
-            year : currdate.getFullYear(),
-            expense : Number(expense),
-            expenseType : expenseType,
-            userEmail : decodedToken.email
+            date: date,
+            month: currdate.getMonth(),
+            year: currdate.getFullYear(),
+            expense: Number(expense),
+            expenseType: expenseType,
+            userEmail: decodedToken.email
         }
         console.log(expenseObj)
         console.log(jwtToken)
-        const response = await axios.post(api,expenseObj,{
-            headers:{
+        const response = await axios.post(api, expenseObj, {
+            headers: {
                 "Authorization": `Bearer ${jwtToken}`
             }
         });
@@ -92,25 +92,36 @@ const Personal = ({refresh , setRefresh}) => {
         <div className="container">
             <div className="form-container">
                 <Heading mb={4} >Enter Your Expense</Heading>
-                <Input
-                    placeholder="Select Date and Time"
-                    size="lg"
-                    type="datetime-local"
-                    className="input"
-                    onChange={(e)=>{setDate(e.target.value)}}
-                />
-                {dateErr && <p style={{ color: 'red' }}>Please Select Date</p>}
-                <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' onChange={(e)=>{setExpense(e.target.value)}} />
-                {expenseErr && <p style={{ color: 'red' }}>Please Enter Expense</p>}
-                <Select
-                    placeholder="Select Expense Type"
-                    options={options}
-                    styles={customStyles}   
-                    className="input select"
-                    onChange={handleSelect}
-                    size='lg'
-                />
-                {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>}
+                
+                <FormControl isInvalid={dateErr} >
+                    <Input
+                        placeholder="Select Date and Time"
+                        size="lg"
+                        type="datetime-local"
+                        className="input"
+                        onChange={(e) => { setDate(e.target.value) }}
+                    />
+                    {/* <p style={{ color: 'red' }}>Please Select Date</p> */}
+                    {dateErr ? <FormErrorMessage> Please Select Date </FormErrorMessage> : null}
+                </FormControl>
+
+                <FormControl isInvalid={expenseErr} >
+                    <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' onChange={(e) => { setExpense(e.target.value) }} />
+                    {expenseErr ? <FormErrorMessage> Please Enter Expense </FormErrorMessage> : null}
+                </FormControl>
+
+                <FormControl isInvalid={expenseTypeErr} >
+                    <Select
+                        placeholder="Select Expense Type"
+                        options={options}
+                        styles={customStyles}
+                        className="input select"
+                        onChange={handleSelect}
+                        size='lg'
+                    />
+                    {expenseTypeErr ? <FormErrorMessage> Please Select Expense Type </FormErrorMessage> : null}
+                </FormControl>
+
                 <Button bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
                     background: "white",
                     color: "var(--primary-color)",
@@ -119,19 +130,20 @@ const Personal = ({refresh , setRefresh}) => {
                 }}
                     onClick={handleSubmit}
                 >Submit</Button>
+
             </div>
             <div className="table-container">
                 <nav className="expense-navmenu">
-                    <NavLink to='/expense' className='expense-home' > 
-                        <span className="expense-span">TABLE</span> 
+                    <NavLink to='/expense' className='expense-home' >
+                        <span className="expense-span">TABLE</span>
                     </NavLink>
                     <NavLink to='/expense/charts' className='expense-home' >
-                        <span className="expense-span">CHARTS</span> 
+                        <span className="expense-span">CHARTS</span>
                     </NavLink>
                 </nav>
                 <Outlet refresh={refresh} />
             </div>
-           
+
 
         </div>
     )

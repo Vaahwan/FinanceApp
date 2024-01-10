@@ -147,29 +147,6 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
                             </Tfoot>
                         </Table>
                     </TableContainer>
-                    <div>
-                        <Button variant='ghost'
-                            bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
-                                background: "white",
-                                color: "var(--primary-color)",
-                                border: '1px',
-                                borderColor: 'var(--primary-color)'
-                            }}
-                            onClick={() => { pageno > 1 ? setPageno(pageno - 1) : null }}
-                        ><ArrowLeftIcon /></Button>
-                        <Button variant=''
-                            bg='var(--secondary-color)' color='var(--primary-color)' size='lg' mt='4' mb='4' pr='14' pl='14' >{pageno}</Button>
-                        <Button variant='ghost'
-                            bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
-                                background: "white",
-                                color: "var(--primary-color)",
-                                border: '1px',
-                                borderColor: 'var(--primary-color)'
-                            }}
-                            onClick={() => { setPageno(pageno + 1) }}
-                        ><ArrowRightIcon /></Button>
-                    </div>
-
                     <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false) }}>
                         <ModalOverlay />
                         <ModalContent>
@@ -228,6 +205,28 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
                     </Modal>
                 </div>
                 : <Loader type="bubble-scale" bgColor="var(--primary-color)" color="var(--secondary-color)" size={50} />}
+                <div>
+                        <Button variant='ghost'
+                            bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                background: "white",
+                                color: "var(--primary-color)",
+                                border: '1px',
+                                borderColor: 'var(--primary-color)'
+                            }}
+                            onClick={() => { pageno > 1 ? setPageno(pageno - 1) : null }}
+                        ><ArrowLeftIcon /></Button>
+                        <Button variant=''
+                            bg='var(--secondary-color)' color='var(--primary-color)' size='lg' mt='4' mb='4' pr='14' pl='14' >{pageno}</Button>
+                        <Button variant='ghost'
+                            bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                background: "white",
+                                color: "var(--primary-color)",
+                                border: '1px',
+                                borderColor: 'var(--primary-color)'
+                            }}
+                            onClick={() => { setPageno(pageno + 1) }}
+                        ><ArrowRightIcon /></Button>
+                    </div>
         </div>
     )
 }
