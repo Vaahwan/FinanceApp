@@ -3,6 +3,7 @@ import { useState,useEffect } from "react";
 import axios from "axios";
 import Chart from 'chart.js/auto'
 import BarChart from "./BarChart";
+import Loader from "react-js-loader";
 
 const ExpenseChart = ({refresh}) => {
     const [data, setData] = useState({});
@@ -52,9 +53,9 @@ const ExpenseChart = ({refresh}) => {
     return (
         <div>
             {
-                data.datasets? <BarChart chartData={data} /> : <p>please wait...</p>
+                data.datasets? <BarChart chartData={data} /> : <Loader type="bubble-scale" bgColor="var(--primary-color)" color="var(--secondary-color)" size={50} />
             }
-        </div>
+        </div>  
     )
 }
 

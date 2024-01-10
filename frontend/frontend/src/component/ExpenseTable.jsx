@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Heading, Button } from '@chakra-ui/react'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon, ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons'
+import Loader from "react-js-loader";
 import Select from 'react-select';
 
 
@@ -44,7 +45,7 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
 
     useEffect(() => {
         fetchedata()
-    }, [refresh,pageno])
+    }, [refresh, pageno])
 
     const fetchedata = async () => {
         const response = await axios.get(url, {
@@ -108,121 +109,125 @@ const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
 
     return (
         <div>
-            <Heading mb='10' >Your Previous Expense</Heading>
-            <TableContainer>
-                <Table variant='simple'>
-                    <TableCaption>Your all the past expenses</TableCaption>
-                    <Thead>
-                        <Tr>
-                            <Th>Date</Th>
-                            <Th>Expense</Th>
-                            <Th >Expense On</Th>
-                            <Th></Th>
-                            {/* <Th>Edit/Delete</Th> */}
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {
-                            data.map((elem, id) => {
-                                return <Tr key={id}>
-                                    <Td>{converDateFormat(elem.date)}</Td>
-                                    <Td>{elem.expense}</Td>
-                                    <Td mr={4} >{elem.expenseType}</Td>
-                                    <td onClick={() => { handleModal(elem) }} > <EditIcon /> </td>
-                                    <td onClick={() => { handleDelete(elem) }} > <DeleteIcon /> </td>
+            {data.length > 0 ?
+                <div>
+                    <Heading mb='10' >Your Previous Expense</Heading>
+                    <TableContainer>
+                        <Table variant='simple'>
+                            <TableCaption>Your all the past expenses</TableCaption>
+                            <Thead>
+                                <Tr>
+                                    <Th>Date</Th>
+                                    <Th>Expense</Th>
+                                    <Th >Expense On</Th>
+                                    <Th></Th>
+                                    {/* <Th>Edit/Delete</Th> */}
                                 </Tr>
-                            })
-                        }
-                    </Tbody>
-                    <Tfoot>
-                        <Tr>
-                            <Th>Date</Th>
-                            <Th>Expense</Th>
-                            <Th >Expense on</Th>
-                            {/* <Th>done</Th> */}
-                        </Tr>
-                    </Tfoot>
-                </Table>
-            </TableContainer>
-            <div>
-                <Button variant='ghost'
-                    bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
-                        background: "white",
-                        color: "var(--primary-color)",
-                        border: '1px',
-                        borderColor: 'var(--primary-color)'
-                    }}
-                    onClick={() => { pageno>1? setPageno(pageno-1) : null }}
-                ><ArrowLeftIcon/></Button>
-                <Button variant=''
-                    bg='var(--secondary-color)' color='var(--primary-color)' size='lg' mt='4' mb='4' pr='14' pl='14' >{pageno}</Button>
-                <Button variant='ghost'
-                    bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
-                        background: "white",
-                        color: "var(--primary-color)",
-                        border: '1px',
-                        borderColor: 'var(--primary-color)'
-                    }}
-                    onClick={() => { setPageno(pageno+1) }}
-                ><ArrowRightIcon/></Button>
-            </div>
-
-            <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false) }}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Edit</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <div className="form-container">
-                            <Heading mb={4} >Edit Your Expense</Heading>
-                            <Input
-                                placeholder="Select Date and Time"
-                                size="lg"
-                                type="datetime-local"
-                                className="input"
-                                value={date}
-                                onChange={(e) => { setDate(e.target.value) }}
-                            />
-                            {/* {dateErr && <p style={{ color: 'red' }}>Please Select Date</p>} */}
-                            <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' value={expense} onChange={(e) => { setExpense(e.target.value) }} />
-                            {/* {expenseErr && <p style={{ color: 'red' }}>Please Enter Expense</p>} */}
-                            <Select
-                                placeholder="Select Expense Type"
-                                options={options}
-                                styles={customStyles}
-                                className="input select"
-                                // value={expenseType}
-                                onChange={(e) => { handleSelect }}
-                                size='lg'
-                            />
-                            {/* {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>} */}
-
-                        </div>
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
-                            background: "white",
-                            color: "var(--primary-color)",
-                            border: '1px',
-                            borderColor: 'var(--primary-color)'
-                        }}
-                            mr={3}
-                            onClick={() => { setModalOpen(false) }}>
-                            Close
-                        </Button>
+                            </Thead>
+                            <Tbody>
+                                {
+                                    data.map((elem, id) => {
+                                        return <Tr key={id}>
+                                            <Td>{converDateFormat(elem.date)}</Td>
+                                            <Td>{elem.expense}</Td>
+                                            <Td mr={4} >{elem.expenseType}</Td>
+                                            <td onClick={() => { handleModal(elem) }} > <EditIcon /> </td>
+                                            <td onClick={() => { handleDelete(elem) }} > <DeleteIcon /> </td>
+                                        </Tr>
+                                    })
+                                }
+                            </Tbody>
+                            <Tfoot>
+                                <Tr>
+                                    <Th>Date</Th>
+                                    <Th>Expense</Th>
+                                    <Th >Expense on</Th>
+                                    {/* <Th>done</Th> */}
+                                </Tr>
+                            </Tfoot>
+                        </Table>
+                    </TableContainer>
+                    <div>
                         <Button variant='ghost'
-                            bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
+                            bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
                                 background: "white",
                                 color: "var(--primary-color)",
                                 border: '1px',
                                 borderColor: 'var(--primary-color)'
                             }}
-                            onClick={() => { handleEdit() }}
-                        >Submit</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+                            onClick={() => { pageno > 1 ? setPageno(pageno - 1) : null }}
+                        ><ArrowLeftIcon /></Button>
+                        <Button variant=''
+                            bg='var(--secondary-color)' color='var(--primary-color)' size='lg' mt='4' mb='4' pr='14' pl='14' >{pageno}</Button>
+                        <Button variant='ghost'
+                            bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                background: "white",
+                                color: "var(--primary-color)",
+                                border: '1px',
+                                borderColor: 'var(--primary-color)'
+                            }}
+                            onClick={() => { setPageno(pageno + 1) }}
+                        ><ArrowRightIcon /></Button>
+                    </div>
+
+                    <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false) }}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>Edit</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <div className="form-container">
+                                    <Heading mb={4} >Edit Your Expense</Heading>
+                                    <Input
+                                        placeholder="Select Date and Time"
+                                        size="lg"
+                                        type="datetime-local"
+                                        className="input"
+                                        value={date}
+                                        onChange={(e) => { setDate(e.target.value) }}
+                                    />
+                                    {/* {dateErr && <p style={{ color: 'red' }}>Please Select Date</p>} */}
+                                    <Input className="input" type='number' placeholder='Enter Your Expense' size='lg' value={expense} onChange={(e) => { setExpense(e.target.value) }} />
+                                    {/* {expenseErr && <p style={{ color: 'red' }}>Please Enter Expense</p>} */}
+                                    <Select
+                                        placeholder="Select Expense Type"
+                                        options={options}
+                                        styles={customStyles}
+                                        className="input select"
+                                        // value={expenseType}
+                                        onChange={(e) => { handleSelect }}
+                                        size='lg'
+                                    />
+                                    {/* {expenseTypeErr && <p style={{ color: 'red' }}>Please Select Expense Type</p>} */}
+
+                                </div>
+                            </ModalBody>
+
+                            <ModalFooter>
+                                <Button bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                    background: "white",
+                                    color: "var(--primary-color)",
+                                    border: '1px',
+                                    borderColor: 'var(--primary-color)'
+                                }}
+                                    mr={3}
+                                    onClick={() => { setModalOpen(false) }}>
+                                    Close
+                                </Button>
+                                <Button variant='ghost'
+                                    bg='var(--primary-color)' color='white' size='lg' mt='4' mb='4' pr='14' pl='14' _hover={{
+                                        background: "white",
+                                        color: "var(--primary-color)",
+                                        border: '1px',
+                                        borderColor: 'var(--primary-color)'
+                                    }}
+                                    onClick={() => { handleEdit() }}
+                                >Submit</Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+                </div>
+                : <Loader type="bubble-scale" bgColor="var(--primary-color)" color="var(--secondary-color)" size={50} />}
         </div>
     )
 }
