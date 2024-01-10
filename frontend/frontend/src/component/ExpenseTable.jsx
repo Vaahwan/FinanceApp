@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios'
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Heading, Button } from '@chakra-ui/react'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input } from '@chakra-ui/react'
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon, ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons'
 import Select from 'react-select';
 
 
@@ -27,10 +27,10 @@ const customStyles = {
 };
 
 
-const ExpenseTable = ({ refresh, setRefresh }) => {
+const ExpenseTable = ({ refresh, setRefresh, pageno, setPageno }) => {
     const [data, setData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
-    const url = 'http://localhost:8080/expensetracker/expense';
+    const url = `http://localhost:8080/expensetracker/expenses?page=${pageno}&size=10`;
     const jwtToken = localStorage.getItem('jwtToken');
     const [date, setDate] = useState();
     const [expense, setExpense] = useState();
@@ -44,7 +44,7 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
 
     useEffect(() => {
         fetchedata()
-    }, [refresh])
+    }, [refresh,pageno])
 
     const fetchedata = async () => {
         const response = await axios.get(url, {
@@ -111,7 +111,7 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
             <Heading mb='10' >Your Previous Expense</Heading>
             <TableContainer>
                 <Table variant='simple'>
-                    <TableCaption>Imperial to metric conversion factors</TableCaption>
+                    <TableCaption>Your all the past expenses</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>Date</Th>
@@ -144,6 +144,28 @@ const ExpenseTable = ({ refresh, setRefresh }) => {
                     </Tfoot>
                 </Table>
             </TableContainer>
+            <div>
+                <Button variant='ghost'
+                    bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
+                        background: "white",
+                        color: "var(--primary-color)",
+                        border: '1px',
+                        borderColor: 'var(--primary-color)'
+                    }}
+                    onClick={() => { pageno>1? setPageno(pageno-1) : null }}
+                ><ArrowLeftIcon/></Button>
+                <Button variant=''
+                    bg='var(--secondary-color)' color='var(--primary-color)' size='lg' mt='4' mb='4' pr='14' pl='14' >{pageno}</Button>
+                <Button variant='ghost'
+                    bg='var(--primary-color)' color='white' size='sm' mt='4' mb='4' pr='14' pl='14' _hover={{
+                        background: "white",
+                        color: "var(--primary-color)",
+                        border: '1px',
+                        borderColor: 'var(--primary-color)'
+                    }}
+                    onClick={() => { setPageno(pageno+1) }}
+                ><ArrowRightIcon/></Button>
+            </div>
 
             <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false) }}>
                 <ModalOverlay />

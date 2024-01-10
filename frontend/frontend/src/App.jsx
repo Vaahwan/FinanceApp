@@ -15,6 +15,7 @@ import ExpenseChart from './component/ExpenseChart'
 function App() {
 
   const [refresh , setRefresh] = useState(true);
+  const [pageno,setPageno] = useState(1);
 
   const isLoggedIn = localStorage.getItem('jwtToken')===null;
   console.log(isLoggedIn);
@@ -26,7 +27,7 @@ function App() {
         <Route path='/' element={<Home/>} />
         <Route element={<AuthRequired/>} >
           <Route path='/expense'  element={<Personal refresh={refresh} setRefresh={setRefresh}/>}>
-            <Route path='/expense' element={<ExpenseTable refresh={refresh} setRefresh={setRefresh} />} />
+            <Route path='/expense' element={<ExpenseTable pageno={pageno} setPageno={setPageno} refresh={refresh} setRefresh={setRefresh} />} />
             <Route path='/expense/charts' element={<ExpenseChart refresh={refresh}/>} />
           </Route>
         </Route>

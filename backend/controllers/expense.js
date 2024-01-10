@@ -33,7 +33,8 @@ const getPageExpense = async(input)=>{
         size = 1;
     }
     const limit = parseInt(size)
-    const pageExpense = await Expense.find({userEmail:input.userEmail}).limit(limit);
+    const skip = (page-1)*limit;
+    const pageExpense = await Expense.find({userEmail:input.userEmail}).skip(skip).limit(limit);
     console.log("check")
     return pageExpense;
 }
