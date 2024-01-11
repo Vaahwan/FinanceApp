@@ -8,6 +8,9 @@
 :root {
   --primary-color: rgba(0, 0, 0, 0.921);
   --secondary-color: #f0f0f0;
+  --chart-color1:#36B05F;
+  --chart-color2:#0EACF0;
+  --chart-color3:#A7F00E;
   --font-size: 16px;
 }
 
