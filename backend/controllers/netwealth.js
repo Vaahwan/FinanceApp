@@ -24,4 +24,18 @@ const getAllNetwealth = async(input)=>{
     return allNetwealth
 }
 
-module.exports = {createNetwealth,getAllNetwealth}
+const updateNetwelath = async(input,id,email)=>{
+    try{
+        const netwealth = await Netwealth.findById(id);
+        if(netwealth.userEmail!=email){
+            return "unauthorised to edit this expense"
+        }
+        const updatedNetwealth = await Netwealth.findOneAndReplace({_id:id},input,{new:true,returnOriginal: false});
+        return updatedNetwealth;
+        }
+    catch(error){
+        return error;
+    }
+}
+
+module.exports = {createNetwealth,getAllNetwealth,updateNetwelath}
