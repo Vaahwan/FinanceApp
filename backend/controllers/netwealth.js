@@ -8,6 +8,12 @@ const createNetwealth = async(input)=>{
     const userEmail = input.userEmail
     const total = saving+demat+stock;
 
+    const isExist = await Netwealth.find({userEmail:userEmail,date:date});
+    if(isExist.length>0){
+        console.log(isExist)
+        return "There is already a entry by for this date please update that"
+    }
+
     const newNetwealth = await Netwealth.create({
         date : date,
         saving : saving,
