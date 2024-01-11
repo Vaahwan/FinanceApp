@@ -38,4 +38,18 @@ const updateNetwelath = async(input,id,email)=>{
     }
 }
 
-module.exports = {createNetwealth,getAllNetwealth,updateNetwelath}
+const deleteNetwealth = async(id,email)=>{
+    try{
+        const netwealth = await Netwealth.findById(id);
+        if(netwealth.userEmail!=email){
+            return "unauthorised to delete this expense";
+        }
+        const deletedNetwealth = await Netwealth.findByIdAndDelete(id);
+        return deletedNetwealth;
+    }
+    catch(error){
+        return error;
+    }
+}
+
+module.exports = {createNetwealth,getAllNetwealth,updateNetwelath,deleteNetwealth}

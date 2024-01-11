@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {tokenValidator} = require('../middlewares/jwtValidator')
 const {netwealthZod} = require('../inputValidate/netwealth') 
-const {createNetwealth,getAllNetwealth,updateNetwelath} = require('../controllers/netwealth')
+const {createNetwealth,getAllNetwealth,updateNetwelath,deleteNetwealth} = require('../controllers/netwealth')
 
 const router = Router();
 
@@ -60,6 +60,20 @@ router.put('/netwealth/:id',tokenValidator,async(req,res)=>{
             const updatedNetwealth = await updateNetwelath(userInput,id,userEmail);
             res.send(updatedNetwealth);
         }
+    }
+    catch(error){
+        res.status(401).json({message:error});
+    }
+})
+
+// delete
+
+router.delete('/netwealth/:id',tokenValidator,async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const userEmail = req.data.email;
+        const deletedNetwealth = await deleteNetwealth(id,userEmail)
+        res.send(deletedNetwealth);
     }
     catch(error){
         res.status(401).json({message:error});
