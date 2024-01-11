@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {tokenValidator} = require('../middlewares/jwtValidator')
 const {netwealthZod} = require('../inputValidate/netwealth') 
-const {createNetwealth} = require('../controllers/netwealth')
+const {createNetwealth,getAllNetwealth} = require('../controllers/netwealth')
 
 const router = Router();
 
@@ -32,6 +32,17 @@ router.post('/netwealth',tokenValidator,async(req,res)=>{
     }
 })
 
+// read
 
+router.get('/netwealth',tokenValidator,async(req,res)=>{
+    try{
+        const userEmail = req.data.email;
+        const allNetwealth = await getAllNetwealth({userEmail:userEmail});
+        res.send(allNetwealth)
+    }
+    catch(error){
+        res.status(401).json({message:error})
+    }
+})
 
 module.exports = router;

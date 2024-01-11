@@ -7,7 +7,7 @@ const createNetwealth = async(input)=>{
     const stock = input.stock;
     const userEmail = input.userEmail
     const total = saving+demat+stock;
-    
+
     const newNetwealth = await Netwealth.create({
         date : date,
         saving : saving,
@@ -19,4 +19,9 @@ const createNetwealth = async(input)=>{
     return newNetwealth;
 }
 
-module.exports = {createNetwealth}
+const getAllNetwealth = async(input)=>{
+    const allNetwealth = await Netwealth.find({userEmail: input.userEmail});
+    return allNetwealth
+}
+
+module.exports = {createNetwealth,getAllNetwealth}
