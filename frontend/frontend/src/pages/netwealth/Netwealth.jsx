@@ -114,10 +114,10 @@ const Netwealth = ({ refresh, setRefresh }) => {
             </div>
             <div className="table-container">
                 <nav className="expense-navmenu">
-                    <NavLink to='/expense' className='expense-home' >
+                    <NavLink to='/netwealth' className='expense-home' >
                         <span className="expense-span">TABLE</span>
                     </NavLink>
-                    <NavLink to='/expense/charts' className='expense-home' >
+                    <NavLink to='/netwealth/charts' className='expense-home' >
                         <span className="expense-span">CHARTS</span>
                     </NavLink>
                 </nav>

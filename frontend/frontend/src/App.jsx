@@ -11,6 +11,8 @@ import AuthRequired from './auth/AuthRequired'
 import {Route,Routes} from 'react-router-dom'
 import ExpenseTable from './component/ExpenseTable'
 import ExpenseChart from './component/ExpenseChart'
+import NetwealthTable from './component/NetwealthTable'
+import NetwealthChart from './component/NetwealthChart'
 
 function App() {
 
@@ -35,7 +37,10 @@ function App() {
           <Route path='/group' element={<Group/>} />
         </Route>
         <Route element={<AuthRequired/>} >
-          <Route path='/netwealth' element={<Netwealth/>} />
+          <Route path='/netwealth' element={<Netwealth/>}>
+            <Route path='/netwealth' element={<NetwealthTable/>} />
+            <Route path='/netwealth/charts' element={<NetwealthChart/>} />
+          </Route>
         </Route>
         <Route path='/signup' element={<Signup/>} />
         <Route path='/login' element={<Login/>} />
