@@ -20,7 +20,9 @@ const NetwealthTable = ()=>{
                 Authorization: `Bearer ${jwtToken}`
             }
         })
-        setData(response.data);
+        const sortedArray = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        console.log(sortedArray)
+        setData(sortedArray);
     }
 
     console.log(data)
@@ -50,7 +52,7 @@ const NetwealthTable = ()=>{
                                     <Th></Th>
                                     {/* <Th>Edit/Delete</Th> */}
                                 </Tr>
-                                
+
                             </Thead>
                             <Tbody>
                                 {
