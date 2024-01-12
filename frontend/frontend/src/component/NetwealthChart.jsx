@@ -11,6 +11,7 @@ const NetwealthChart = ({ refresh }) => {
     const url = 'http://localhost:8080/netwealthtracker/netwealth';
     const jwtToken = localStorage.getItem('jwtToken');
 
+
     useEffect(() => {
         fetchedata()
     }, [refresh])
@@ -36,10 +37,10 @@ const NetwealthChart = ({ refresh }) => {
             labels: label,
             datasets: [
                 {
-                    label: "Net wealth",
-                    data: dataset,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgb(75, 192, 192)',
+                    label: "stock",
+                    data: dataset2,
+                    backgroundColor: 'rgba(54, 176, 95, 0.5)',
+                    borderColor: '#36B05F',
                     borderWidth: 2,
                     fill: true,
                     borderJoinStyle: 'round',
@@ -47,10 +48,10 @@ const NetwealthChart = ({ refresh }) => {
                     borderWidth: 3
                 },
                 {
-                    label: "stock",
-                    data: dataset2,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgb(75, 192, 192)',
+                    label: "Net wealth",
+                    data: dataset,
+                    backgroundColor: 'rgba(243, 186, 47, 0.3)',
+                    borderColor: '#36B05F',
                     borderWidth: 2,
                     fill: true,
                     borderJoinStyle: 'round',
