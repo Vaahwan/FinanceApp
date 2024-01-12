@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Heading, Button } from '@chakra-ui/react'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input } from '@chakra-ui/react'
-import { DeleteIcon, EditIcon, ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon, ArrowDownIcon } from '@chakra-ui/icons'
 import Loader from "react-js-loader";
 import axios from "axios";
 
@@ -36,6 +36,13 @@ const NetwealthTable = ()=>{
         return formattedDate;
     }
 
+    const calculateChange = (curr,prev)=>{
+        const diff = curr - prev;
+        const point = diff/prev;
+        const percent = Math.round(point*100);
+        return percent
+    }
+
     return(
         <div>
             {data.length>0?
@@ -57,12 +64,12 @@ const NetwealthTable = ()=>{
                             <Tbody>
                                 {
                                     data.map((elem, id,array) => {
-                                        console.log(array.length)
-                                        const prevTotal = id < array.length && array.total ? array[id + 1].total : 0;
+                                        const prevTotal = id < array.length-1 && array[id+1].total ? array[id + 1].total : 0;
+                                        const percent = calculateChange(elem.total,prevTotal);
                                         return <Tr key={id}>
                                             <Td>{converDateFormat(elem.date)}</Td>
                                             <Td>₹ {elem.total}</Td>
-                                            <Td mr={4} >{prevTotal}</Td>
+                                            <Td color={percent>0?'green':'red'} mr={4} >{ percent>0?  <ArrowUpIcon/> : <ArrowDownIcon/> } {percent}%</Td>
                                             <td onClick={() => { handleModal(elem) }} > <EditIcon /> </td>
                                             <td onClick={() => { handleDelete(elem) }} > <DeleteIcon /> </td>
                                         </Tr>
