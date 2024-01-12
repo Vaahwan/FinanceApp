@@ -69,7 +69,7 @@ const NetwealthTable = ()=>{
                                         return <Tr key={id}>
                                             <Td>{converDateFormat(elem.date)}</Td>
                                             <Td>₹ {elem.total}</Td>
-                                            <Td color={percent>0?'green':'red'} mr={4} >{ percent>0?  <ArrowUpIcon/> : <ArrowDownIcon/> } {percent}%</Td>
+                                            <Td color={percent>0?'green':'red'} mr={4} >{ percent>0?  <ArrowUpIcon/> : <ArrowDownIcon/> } {Math.abs(percent)}%</Td>
                                             <td onClick={() => { handleModal(elem) }} > <EditIcon /> </td>
                                             <td onClick={() => { handleDelete(elem) }} > <DeleteIcon /> </td>
                                         </Tr>
