@@ -5,14 +5,14 @@ import { DeleteIcon, EditIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon, Arrow
 import Loader from "react-js-loader";
 import axios from "axios";
 
-const NetwealthTable = ()=>{
+const NetwealthTable = ({refresh,setRefresh})=>{
     const [data,setData] = useState([]);
     const api = `http://localhost:8080/netwealthtracker/netwealth`
     const jwtToken = localStorage.getItem('jwtToken');
 
     useEffect(()=>{
         fetchedata();
-    },[])
+    },[refresh])
 
     const fetchedata = async()=>{
         const response = await axios.get(api,{
@@ -25,7 +25,15 @@ const NetwealthTable = ()=>{
         setData(sortedArray);
     }
 
-    console.log(data)
+    const handleDelete = async(elem)=>{
+        const deleteurl = `http://localhost:8080/netwealthtracker/netwealth/${elem._id}`
+        const response = await axios.delete(deleteurl, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`
+            }
+        });
+        setRefresh(!refresh);
+    }
 
     const converDateFormat = (inputDate) => {
         let dateObj = new Date(inputDate);

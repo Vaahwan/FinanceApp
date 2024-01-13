@@ -37,9 +37,9 @@ function App() {
           <Route path='/group' element={<Group/>} />
         </Route>
         <Route element={<AuthRequired/>} >
-          <Route path='/netwealth' element={<Netwealth/>}>
-            <Route path='/netwealth' element={<NetwealthTable/>} />
-            <Route path='/netwealth/charts' element={<NetwealthChart/>} />
+          <Route path='/netwealth' element={<Netwealth refresh={refresh} setRefresh={setRefresh} />}>
+            <Route path='/netwealth' element={<NetwealthTable refresh={refresh} setRefresh={setRefresh} />} />
+            <Route path='/netwealth/charts' element={<NetwealthChart refresh={refresh} />} />
           </Route>
         </Route>
         <Route path='/signup' element={<Signup/>} />

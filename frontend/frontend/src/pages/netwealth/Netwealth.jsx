@@ -35,25 +35,30 @@ const Netwealth = ({ refresh, setRefresh }) => {
             setTimeout(()=>{
                 setDateErr(false);
             },3000)
+            return
         }
         if(saving==""){
             setSavingErr(true);
             setTimeout(()=>{
                 setSavingErr(false);
             },3000)
+            return
         }
         if(demat==""){
             setDematErr(true);
             setTimeout(()=>{
                 setDematErr(false); 
             },3000)
+            return
         }
         if(stock==""){
             setStockErr(true);
             setTimeout(()=>{
                 setStockErr(false);
             },3000)
+            return
         }
+        
 
         const netwealthObj = {
             date : date,
@@ -67,6 +72,7 @@ const Netwealth = ({ refresh, setRefresh }) => {
                 "Authorization": `Bearer ${jwtToken}`
             }
         })
+        setRefresh(!refresh)
         console.log(response);
     }
 
